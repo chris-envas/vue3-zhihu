@@ -1,16 +1,31 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div>
+    {{ count }}
+    {{ double }}
+    <button @click="increase">add</button>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-
+import { defineComponent, toRefs, computed, reactive } from "vue";
+interface dataProps {
+  count: number;
+  double: number;
+  increase: () => void;
+}
 export default defineComponent({
   name: "App",
-  components: {
-    HelloWorld,
+  setup() {
+    const data: dataProps = reactive({
+      count: 0,
+      increase: () => data.count++,
+      double: computed(() => data.count * 2),
+    });
+    const dataRefs = toRefs(data);
+    return {
+      ...dataRefs,
+    };
   },
 });
 </script>
